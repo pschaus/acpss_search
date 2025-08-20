@@ -1,0 +1,83 @@
+\begin{tikzpicture}[
+    level distance=1cm,
+    level 1/.style={sibling distance=8cm},
+    level 2/.style={sibling distance=4cm},
+    level 3/.style={sibling distance=2cm},
+    level 4/.style={sibling distance=1cm},
+    level 5/.style={sibling distance=0.5cm},
+    every node/.style={circle, draw=blue!60, fill=blue!5, very thick, minimum size=7mm},
+    phantom/.style={coordinate},
+    invisible/.style={edge from parent/.style={draw=none}}
+]
+
+% Root node
+    \node {}
+    % --- Left branch (0 discrepancy)
+    child {
+        node {}
+        % --- LL (still 0 discrepancy)
+        child {
+            node {}
+            % --- LLL (still 0 discrepancy)
+            child {
+                node {}
+                child { node[fill=green!30] {} } % depth 5 leaf
+                child { node[fill=green!30] {} } % depth 5 leaf
+            }
+            % --- LLR (1 discrepancy)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child { node[fill=green!30] {} }
+            }
+        }
+        % --- LR (1 discrepancy)
+        child {
+            node {}
+            % --- LRL (1 discrepancy)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child { node[fill=green!30] {} }
+            }
+            % --- LRR (2 discrepancies, allowed but stop deeper rights)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child[phantom, invisible]
+            }
+        }
+    }
+    % --- Right branch (1 discrepancy)
+    child {
+        node {}
+        % --- RL (1 discrepancy)
+        child {
+            node {}
+            % --- RLL (1 discrepancy)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child { node[fill=green!30] {} }
+            }
+            % --- RLR (2 discrepancies, allowed but stop deeper rights)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child[phantom, invisible]
+            }
+        }
+        % --- RR (2 discrepancies, allowed but no further rights)
+        child {
+            node {}
+            % --- RRL (2 discrepancies)
+            child {
+                node {}
+                child { node[fill=green!30] {} }
+                child[phantom, invisible]
+            }
+            % --- RRR (would be 3 discrepancies → prune)
+            child[phantom, invisible]
+        }
+    };
+\end{tikzpicture}

@@ -1,0 +1,212 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+\usepackage{float} % Add this package
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{xcolor}
+% Define colors for syntax highlighting
+\definecolor{codegreen}{rgb}{0,0.6,0}   % Green for comments
+\definecolor{codegray}{rgb}{0.5,0.5,0.5} % Gray for line numbers
+\definecolor{codepurple}{rgb}{0.58,0,0.82} % Purple for strings
+\definecolor{backcolour}{rgb}{1,1,1}    % White background
+\usepackage{amsthm}
+
+% Define a new "exercise" environment with numbering
+\newtheorem{exercise}{Exercise}[section]
+\usepackage{listings}
+\usepackage{tikz}
+
+% Configure listings
+\lstset{
+    backgroundcolor=\color{backcolour}, % White background
+    commentstyle=\color{codegreen},     % Green comments
+    keywordstyle=\color{magenta},       % Magenta keywords
+    numberstyle=\tiny\color{codegray},  % Gray line numbers
+    stringstyle=\color{codepurple},     % Purple strings
+    basicstyle=\ttfamily\footnotesize,  % Monospace font
+    breakatwhitespace=false,            % No breaks at whitespace
+    breaklines=true,                    % Break long lines
+    captionpos=b,                       % Caption at bottom
+    keepspaces=true,                    % Keep spaces
+    numbers=left,                       % Line numbers on left
+    numbersep=5pt,                      % Distance of line numbers from code
+    showspaces=false,                   % Don't show spaces
+    showstringspaces=false,             % Don't show spaces in strings
+    showtabs=false,                     % Don't show tabs
+    tabsize=2,                          % Tab size
+    frame=single,                       % Frame around the listing
+    rulecolor=\color{black},            % Frame color
+    escapeinside={\%*}{*)},             % Escape to LaTeX
+    xleftmargin=20pt,                   % Left margin
+    framexleftmargin=20pt,              % Frame left margin
+}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{CP Search exercises}
+\author{Pierre Schaus, UCLouvain, ICTEAM}
+
+\begin{document}
+    \maketitle
+
+    \begin{abstract}
+    This document contains exercises related to the search topic in constraint programming.
+    Those exercises are proposed in the ACP summer school on constraint programming at Benin.
+    \end{abstract}
+
+    \section{TinyCSP has lost its search}
+
+    In this exercise, we will study a simple CSP solver in Java called TinyCSP.
+    Let us first see how to model the NQueens problem using TinyCSP.
+    The NQueens problem is to place N queens on an N x N chessboard such that no two queens threaten each other.
+    The model is given in the code Listing~\ref{nqueen} below.
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java, label=nqueen, caption={NQueens Model using TinyCSP}, escapeinside={(*@}{@*)}]{figures/NQueens.java}
+    \end{minipage}
+
+    The domain to represent the values of the variables is implemented in the class \texttt{Domain} and the variables are instances of the class \texttt{Domain}.
+    It is a simple implementation of a domain using a \texttt{BitSet} to represent the set of values in the domain.
+
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java,caption={Domain Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Domain.java}
+    \end{minipage}
+
+
+
+    The Variable implementatino is very simple, it just contains a domain.
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java,caption={Variable Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Variable.java}
+    \end{minipage}
+
+
+    Constraint is an abstract class with an absract method \texttt{propagate()}
+    that is called by the solver to remove inconsistent values from the domains of the variables involved in the constraint.
+    It also returns true if any value could be removed from the domains of the variables involved in the constraint.
+    The constraint can also throw an \texttt{Inconsistency} exception if the constraint is not satisfiable.
+
+    In TinyCSP, we have only one constraint implemented, the \texttt{NotEqual} constraint.
+    Of course feel free to implement more constraints during your free times.
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java,caption={Constraints Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Constraint.java}
+    \end{minipage}
+
+
+    The TinyCSP solver class is the main class that implements the solver.
+    It contains a list of constraints and a list of variables.
+    The solver provides factory methods to create variables, add constraints, and trigger fix point propagation.
+    Unfortunately, the search is not implemented yet.
+
+    \begin{exercise}
+        Your task is to implement the depth search algorithm.
+        If you need some hint, you can look at the Listing~\ref{shuffled_dfs} below
+        that contains the shuffled lines of code to complete the \texttt{dfsNary} method.
+    \end{exercise}
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java, label=tinycsp, caption={TinyCSP Solver class}, escapeinside={(*@}{@*)}]{figures/TinyCSP.java}
+    \end{minipage}
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java, label=shuffled_dfs, caption={Shuffled lines for completing the dfsNary of Listing~\ref{tinycsp}},escapeinside={(*@}{@*)}]{figures/DFSShuffle.java}
+    \end{minipage}
+
+    As you might have noticed the variable selection is very simple,
+    it just selects the first variable that is not fixed.
+    Now that you are convinced about the importance of the first fail heuristic,
+    let us implement it in the next exercise.
+
+    \begin{exercise}
+        Your task is to implement the first fail heuristic in Listing~\ref{ff}.
+        To help you, we have provided the shuffled lines of code in Listing~\ref{shuffled_ff} below.
+        Of course, don't forget to adapt your code for the search algorithm
+        in Listing~\ref{tinycsp} to call your new first fail heuristic.
+    \end{exercise}
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java, label=ff, caption={First fail},escapeinside={(*@}{@*)}]{figures/FirstFail.java}
+    \end{minipage}
+
+    \begin{minipage}{\linewidth}
+        \lstinputlisting[language=Java, label=shuffled_ff, caption={Suffled lines for completing the first fail of Listing~\ref{ff}},escapeinside={(*@}{@*)}]{figures/FirstFailShuffle.java}
+    \end{minipage}
+
+
+    \section{Backtracking Search with Sparse-Sets}
+
+
+
+    \section{Black-Box Search for Variable Heuristics}
+
+    \begin{exercise}
+        Consider seven variables $X, Y, Z, A, B, C, D$ such that:
+
+        \begin{itemize}
+        \item $X, Y, Z$ have the domain $\{0,1\}$ and there are no constraints on these variables.
+        \item $A, B, C, D$ have the domain $\{0,1,2\}$ and there is a single constraint: $AllDifferent(A, B, C, D)$ implemented using forward checking (only fixed variables are removed from the domains of the other unfixed variables).
+        \end{itemize}
+        Consider a \emph{conflict-ordering search} that, by default,
+        considers the variables in the order given above $X \leftarrow  Y \leftarrow  Z \leftarrow  A \leftarrow  B \ldots $ and always tries,
+        given a selected variable $V$, $V = V.min()$ on the left branch, and $V \neq V.min()$ on the right branch.
+
+        There are no solutions to this problem.
+        Draw the search tree.
+        How many nodes will be visited by the solver?
+    \end{exercise}
+
+    \section{Value Heuristics}
+
+    \section{Discrepancy Search}
+
+    \begin{exercise}
+        A complete binary tree of depth 4 was pruned by a limited discrepancy search.
+        The resulting tree is shown in Figure~\ref{fig:discrepancy1}.
+        What do you tink was the dicrepancy limit used to prune the tree?
+        \label{ex:discrepancy1}
+    \end{exercise}
+
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/discrepancy1.tikz}
+        \caption{Exercise~\ref{ex:discrepancy1}.}
+        \label{fig:discrepancy1}
+    \end{figure}
+
+    \begin{exercise}
+        Consider binary tree shown in Figure~\ref{fig:discrepancy2}.
+        What is the lowest discrepancy limit that could be used to that no nodes are pruned?
+        \label{ex:discrepancy2}
+    \end{exercise}
+
+    \begin{exercise}
+        Color the nodes in red in Figure~\ref{fig:discrepancy2} corresponding to the nodes that would be pruned by
+        a limited discrepancy search with a discrepancy limit of 2.
+        \label{ex:discrepancy3}
+    \end{exercise}
+
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/discrepancy2.tikz}
+        \caption{Exercise~\ref{ex:discrepancy2} and~\ref{ex:discrepancy3}.}
+        \label{fig:discrepancy2}
+    \end{figure}
+
+    \section{Breaking Symmetries}
+
+    \section{Large Neighborhood Search}
+
+    \section{Restarts}
+
+    \bibliographystyle{alpha}
+    \bibliography{biblio}
+\end{document}

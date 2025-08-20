@@ -1,0 +1,75 @@
+\begin{tikzpicture}[
+    level distance=1cm,
+    level 1/.style={sibling distance=6cm},
+    level 2/.style={sibling distance=3cm},
+    level 3/.style={sibling distance=1.5cm},
+    level 4/.style={sibling distance=1cm},
+    level 5/.style={sibling distance=0.5cm},
+    level 6/.style={sibling distance=0.4cm},
+    every node/.style={circle, draw=blue!60, fill=white, very thick, minimum size=4mm},
+    phantom/.style={coordinate},
+    invisible/.style={edge from parent/.style={draw=none}}
+]
+
+% Root node
+    \node {}
+    child {
+        node {} % left child depth 1
+        child {
+            node {} % left-left depth 2
+            child {
+                node {} % left-left-left depth 3
+                child {
+                    node {} % depth 4
+                    child { node {}
+                        child { node {} }
+                        child { node {} }% leaf depth 5
+                    } % leaf depth 5
+                    child { node {} } % leaf depth 5
+                }
+                child { node {} } % leaf depth 4
+            }
+            child { node {} } % leaf depth 3
+        }
+        child {
+            node {} % left-right depth 2
+            child { node {} } % leaf depth 3
+            child {
+                node {} % depth 3
+                child {
+                    node {} % depth 4
+                    child { node {} } % leaf depth 5
+                    child { node {} } % leaf depth 5
+                }
+                child {
+                    node {} % depth 4
+                    child { node {} } % leaf depth 5
+                    child {
+                        node {} % depth 5
+                        child { node {} } % leaf depth 6
+                        child { node {} } % leaf depth 6
+                    }
+                }
+            }
+        }
+    }
+    child {
+        node {} % right child depth 1
+        child {
+            node {} % right-left depth 2
+            child { node {} } % leaf depth 3
+            child {
+                node {} % depth 3
+                child { node {} } % leaf depth 4
+                child {
+                    node {} % depth 4
+                    child { node {} } % leaf depth 5
+                    child {
+                        node {} % depth 5
+                    }
+                }
+            }
+        }
+        child { node {} } % leaf depth 2
+    };
+\end{tikzpicture}

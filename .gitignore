@@ -1,0 +1,68 @@
+############################
+# Java / IntelliJ IDEA
+############################
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# IDEA project files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle / Maven outputs
+target/
+build/
+out/
+
+############################
+# LaTeX + BibTeX
+############################
+# Auxiliary files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+
+# Intermediate latexmk and arara files
+*.dvi
+*.xdv
+*.ps
+
+# Backup files
+*~
+*.bak
+*.sav
+*.swp
+*.synctex(busy)
+
+############################
+# OS / Misc
+############################
+.DS_Store
+Thumbs.db
