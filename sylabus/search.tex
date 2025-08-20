@@ -186,6 +186,37 @@
 
 
     \begin{exercise}
+        Consider the Traveling Salesman Problem (TSP) with 6 cities represented by the circuit shown in Figure~\ref{fig:tsp_heuristic}.
+        Compare the three heuristics $H_1$, $H_2$, and $H_3$ for selecting the next variable to branch on and the value for the leftmost branch.
+        Depict the circuit obtained when reaching the first left-most solution by each heuristic in Figure~\ref{fig:tsp_heuristic}.
+        \begin{enumerate}
+            \item $H_1$. Static Variable Heuristic. Assign the variables in the order $X_A \rightarrow X_B \rightarrow X_C \rightarrow \ldots \rightarrow X_F $.
+            Choose as value for the leftmost branch the closest successor.
+            \item $H_2$. Choose as next variable, the one that corresponds to the last assigned value (end of partial circuit).
+            Choose as value for the leftmost branch the closest successor.
+            \item $H_3$. Min Regret Variable Heuristic. For each unassigned position $X_i$, calculate the \emph{regret} for each successor.
+            The regret of of $X_i = d_{i,v_a} -d_{i,v_b}$ where $d_{i,v_a}$ is the minimum distance from position $X_i$ a possible position
+            and $d_{i,v_b}$ is the second minimum distance from position $X_i$  to a possible position.
+            Choose as value for the leftmost branch the closest successor.
+        \end{enumerate}
+        \label{ex:val_heuris2}
+    \end{exercise}
+
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{tabular}{|c|c|c|}
+            \hline \\
+            $H_1$ & $H_2$ & $H_2$ \\
+            \input{figures/tsp_heuristic.tikz} & \input{figures/tsp_heuristic.tikz} & \input{figures/tsp_heuristic.tikz} \\ \hline
+        \end{tabular}
+        \label{fig:tsp_heuristic}
+        \caption{Exercise~\ref{ex:val_heuris2}.}
+    \end{figure}
+
+
+
+    \begin{exercise}
         Select all the true statements regarding value selection heuristics:
         \begin{enumerate}
             \item Once the variable to branch on has been selected, it is important to select as value for the leftmost branch one that has the highest chance to lead to failure, in the spirit of the first-fail principle. %F

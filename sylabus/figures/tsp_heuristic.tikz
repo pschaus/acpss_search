@@ -1,0 +1,21 @@
+\begin{tikzpicture}[scale=0.45, >={Stealth[length=6pt]}]
+    % Temple coordinates
+    \coordinate (A) at (0, 0);
+    \coordinate (B) at (3, 4);
+    \coordinate (C) at (8, 2);
+    \coordinate (D) at (5, 7);
+    \coordinate (E) at (1, 5);
+    \coordinate (F) at (3, 3);
+
+    % Draw temples
+    \filldraw (A) circle (3pt) node[below left]{A};
+    \filldraw (B) circle (3pt) node[below right]{B};
+    \filldraw (C) circle (3pt) node[below right]{C};
+    \filldraw (D) circle (3pt) node[above right]{D};
+    \filldraw (E) circle (3pt) node[above left]{E};
+    \filldraw (F) circle (3pt) node[above left]{F};
+
+
+    % Grid (optional)
+    \draw[gray, dashed] (0, 0) grid (8, 7);
+\end{tikzpicture}
