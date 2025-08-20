@@ -19,6 +19,8 @@
 \newtheorem{exercise}{Exercise}[section]
 \usepackage{listings}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
 
 % Configure listings
 \lstset{
@@ -151,6 +153,20 @@
 
 
     \begin{exercise}
+        Select all variable selection heuristics that are \textbf{not} in the spirit of the first-fail principle:
+        \begin{enumerate}
+            \item Select an unfixed variable with the largest domain size.
+            \item Select a random unfixed variable.
+            \item Select an unfixed variable with the smallest domain size.
+            \item Select an unfixed variable involved in the largest number of constraints.
+            \item Select an unfixed variable having the lowest propagation activity.
+            \item Select an unfixed variable involved in the smallest number of constraints.
+            \item Select a value that has the smallest lower-bound propagation impact.
+        \end{enumerate}
+        \label{ex:variable_heuristics}
+    \end{exercise}
+
+    \begin{exercise}
         Consider seven variables $X, Y, Z, A, B, C, D$ such that:
 
         \begin{itemize}
@@ -167,6 +183,20 @@
     \end{exercise}
 
     \section{Value Heuristics}
+
+
+    \begin{exercise}
+        Select all the true statements regarding value selection heuristics:
+        \begin{enumerate}
+            \item Once the variable to branch on has been selected, it is important to select as value for the leftmost branch one that has the highest chance to lead to failure, in the spirit of the first-fail principle. %F
+            \item Once the variable to branch on has been selected, it is important to select as value for the leftmost branch one that has the highest chance to lead to success. %T
+            \item The value selection heuristic should mimic a greedy algorithm to find good solutions early. %T
+            \item Phase saving is a learning scheme for the value selection heuristic that tries first the last value that was tried without failing. %T
+            \item Selecting a value that has the least impact on the objective bound should lead to a good first solution. %T
+            \item The value selection heuristic is not important for satisfaction problems. %F
+        \end{enumerate}
+        \label{ex:value_heuristics}
+    \end{exercise}
 
     \section{Discrepancy Search}
 
@@ -265,11 +295,11 @@
         Assume that we use search heuristic denoted by $H$, and we break the symmetries by adding the constraints
         $q_1<q_2< \ldots <q_n$ to our model.
         Which statements are valid?
-        \begin{itemize}
+        \begin{enumerate}
             \item The number of backtracks required using heuristic $H$ to find the first solution might be larger or smaller, but hopefully smaller
             \item The number of solutions output by my model when enumerating them all is reduced by a factor $n!$ (factorial)
             \item The number of backtracks required using heuristic $H$ to find the first solution is always reduced since the search tree to explore is smaller.
-        \end{itemize}
+        \end{enumerate}
         \label{ex:queens_symmetry2}
     \end{exercise}
 
@@ -314,12 +344,18 @@
     \end{exercise}
 
 
+
     \begin{figure}[htbp]
-        \centering
-        \includegraphics[scale=0.5]{figures/lns1.pdf}
-        \caption{Exercise~\ref{ex:lns1}.}
-        \label{fig:lns1}
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline \\
+    LNS iteration 1 & LNS iteration 2 & LNS iteration 3 \\
+    \input{figures/lns_tsp1.tikz} & \input{figures/lns_tsp2.tikz} & \input{figures/lns_tsp3.tikz} \\ \hline
+    \end{tabular}
+    \label{fig:lns1}
+    \caption[]{Exercise~\ref{ex:lns1}. The three iterations of the LNS algorithm on a TSP instance.}
     \end{figure}
+
 
     \section{Restarts}
 
