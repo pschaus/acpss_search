@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=1.5]
+  % Define colors
+  \colorlet{red}{red!70}
+  \colorlet{green}{green!70}
+  \colorlet{blue}{blue!70}
+
+  % Draw the hexagon
+  \draw[thick] (0,0) -- (1,0) -- (1.5,0.87) -- (1,1.73) -- (0,1.73) -- (-0.5,0.87) -- cycle;
+
+  % Label and color the vertices
+  \node[fill=red, circle, inner sep=3pt, label=below:1] at (0,0) {};
+  \node[fill=green, circle, inner sep=3pt, label=below:2] at (1,0) {};
+  \node[fill=blue, circle, inner sep=3pt, label=right:3] at (1.5,0.87) {};
+  \node[fill=red, circle, inner sep=3pt, label=above:4] at (1,1.73) {};
+  \node[fill=green, circle, inner sep=3pt, label=above:5] at (0,1.73) {};
+  \node[fill=blue, circle, inner sep=3pt, label=left:6] at (-0.5,0.87) {};
+
+\end{tikzpicture}

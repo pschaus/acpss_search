@@ -1,0 +1,36 @@
+\begin{tikzpicture}[scale=0.8, bin/.style={minimum width=2cm, minimum height=0.5cm, draw, anchor=south west}]
+
+    % Bin 0
+    \draw (0,0) rectangle (2,3);
+    \foreach \y in {0.5,1.0,1.5,2.0,2.5} {
+        \draw[dashed, gray] (0,\y) -- (2,\y);
+    }
+    \node at (1, -0.3) {Bin 0};
+
+    % Bin 1
+    \draw (3,0) rectangle (5,3);
+    \foreach \y in {0.5,1.0,1.5,2.0,2.5} {
+        \draw[dashed, gray] (3,\y) -- (5,\y);
+    }
+    \node at (4, -0.3) {Bin 1};
+
+    % Bin 2
+    \draw (6,0) rectangle (8,3);
+    \foreach \y in {0.5,1.0,1.5,2.0,2.5} {
+        \draw[dashed, gray] (6,\y) -- (8,\y);
+    }
+    \node at (7, -0.3) {Bin 2};
+
+    % Bin 3
+    \draw (9,0) rectangle (11,3);
+    \foreach \y in {0.5,1.0,1.5,2.0,2.5} {
+        \draw[dashed, gray] (9,\y) -- (11,\y);
+    }
+    \node at (10, -0.3) {Bin 3};
+
+    % Y-axis labels for capacity (optional)
+    \foreach \y/\label in {0.5/1,1.0/2,1.5/3,2.0/4,2.5/5} {
+        \node[left] at (-0.2,\y) {\label};
+    }
+    \node[left] at (-0.2,3) {6};
+\end{tikzpicture}

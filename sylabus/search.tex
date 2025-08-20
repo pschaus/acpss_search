@@ -148,6 +148,8 @@
 
     \section{Black-Box Search for Variable Heuristics}
 
+
+
     \begin{exercise}
         Consider seven variables $X, Y, Z, A, B, C, D$ such that:
 
@@ -203,7 +205,121 @@
 
     \section{Breaking Symmetries}
 
+    \subsection{With constraints ...}
+
+    Consider a graph with 6 vertices arranged in a hexagon (each vertex connected to its two immediate neighbors).
+    The goal is to color each vertex with one of 3 colors (e.g., Red, Green, Blue) such that no two adjacent vertices share the same color.
+
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/symmetry1.tikz}
+        \caption{Exercise~\ref{ex:symmetry1}.}
+        \label{fig:symmetry1}
+    \end{figure}
+
+    \begin{exercise}
+        Propose a CSP model for the hexagon problem (variables, domains, constraints).
+        \begin{verbatim}
+            ....
+            ....
+            ...
+        \end{verbatim}
+        \label{ex:symmetry1}
+    \end{exercise}
+
+
+    \begin{exercise}
+        List 3 type of symmetries in the hexagon problem.
+        \label{ex:symmetry2}
+    \end{exercise}
+
+    \begin{exercise}
+        Given a solution to the hexagon problem, how many symmetric solutions can you generate
+        using each type of symmetry ?
+        \label{ex:symmetry3}
+    \end{exercise}
+
+    \begin{exercise}
+        Given a solution to the hexagon problem,
+        propose a symmetry breaking constraint that can be used to eliminate symmetric solutions.
+        \label{ex:symmetry4}
+    \end{exercise}
+
+
+    \begin{exercise}
+        We consider an alternative model for the n-queens problem, where the n-variables $q_1 \ldots,q_n$
+        correspond to the $n$ queens and the domain of each variable
+        is the set of integers $\{1,2,\ldots,n^2\}$, representing the squares on the chessboard.
+        Thus an assignment $q_i=a$ means that the $i$th queen is on square $a$.
+        Which statements are valid regarding the symmetries of this model?
+        \begin{itemize}
+            \item This model presents more symmetries than the classical n-queens formulation with one variable per column and the domain representing the row.
+            \item This model presents less symmetries than the classical n-queens formulation with one variable per column and the domain representing the row.
+            \item Since I can create a mapping between the variables preserving the (non)-solution, this model presents variable symmetries
+        \end{itemize}
+        \label{ex:queens_symmetry1}
+    \end{exercise}
+
+    \begin{exercise}
+        Considering the alternative model for the n-queens problem from Exercise~\ref{ex:queens_symmetry1},
+        Assume that we use search heuristic denoted by $H$, and we break the symmetries by adding the constraints
+        $q_1<q_2< \ldots <q_n$ to our model.
+        Which statements are valid?
+        \begin{itemize}
+            \item The number of backtracks required using heuristic $H$ to find the first solution might be larger or smaller, but hopefully smaller
+            \item The number of solutions output by my model when enumerating them all is reduced by a factor $n!$ (factorial)
+            \item The number of backtracks required using heuristic $H$ to find the first solution is always reduced since the search tree to explore is smaller.
+        \end{itemize}
+        \label{ex:queens_symmetry2}
+    \end{exercise}
+
+    \subsection{With the search ...}
+
+    The bin-packing problem is to pack a set of items into a number of bins while satisfying the capacity of the bins.
+    This problem can be modeled as a CSP using one variable per item, each with a domain representing the bin in which the item is packed.
+
+
+    \begin{exercise}
+        Consider a bin-packing problem with the items of weights $[1,2,2,2,3,3,4,4]$ and 4 empty bins of capacity 6.
+        In a node of the search tree, we have the following partial assignment.
+        $X_0=0,X_4=0,X_1=1,X_2=1$.
+        \begin{itemize}
+            \item  Represent the item placed in each bin corresponding to the assignment in Figure~\ref{fig:symmetry2}.
+            \item  The variable $X_5$ is the next unassigned variable selected by the search heuristic. What are the possible values for $X_5$? What branches must then be considered for avoiding the exploration of symmetric solutions?
+        \end{itemize}
+        \label{symmetry2}
+    \end{exercise}
+
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/binpacking.tikz}
+        \caption{Exercise~\ref{ex:symmetry2}.}
+        \label{fig:symmetry2}
+    \end{figure}
+
+
+
     \section{Large Neighborhood Search}
+    
+    \begin{exercise}
+        For modeling the traveling salesman problem (TSP) using CP, one can use a successor array representation.
+        The variable $X_i$ represents the city visited after city $i$.
+        Then one need one $\texttt{circuit}X_1 \ldots X_n)$ global constraint to ensure that the tour is a single cycle.
+        For the circuit on the left of Figure~\ref{fig:lns1} and the successor array representation,
+        give the assignment to the variables:
+        \begin{equation*}
+            X_0 = \ldots, X_1 = \ldots, X_2 = \ldots, X_3 = \ldots,X_4 = \ldots, X_5 = \ldots, X_6 = \ldots.
+        \end{equation*}
+        \label{ex:lns1}
+    \end{exercise}
+
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{figures/lns1.pdf}
+        \caption{Exercise~\ref{ex:lns1}.}
+        \label{fig:lns1}
+    \end{figure}
 
     \section{Restarts}
 
