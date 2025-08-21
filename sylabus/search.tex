@@ -51,66 +51,84 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
 
-\title{CP Search exercises}
+\newtcolorbox{answerbox}[2][]{%
+    enhanced,
+    frame code={%
+        \draw[thick, gray] (frame.south west) rectangle (frame.north east);},
+    colback=white,
+    colframe=gray,
+    arc=0pt,
+    outer arc=0pt,
+    height=#2,
+    width=\textwidth,
+    #1}
+
+
+\title{CP Search: Exercises}
 \author{Pierre Schaus, UCLouvain, ICTEAM}
 
 \begin{document}
     \maketitle
 
     \begin{abstract}
-    This document contains exercises related to the search topic in constraint programming.
-    Those exercises are proposed in the ACP summer school on constraint programming at Benin.
+     Exercises proposed in the ACP summer school on constraint programming at Benin.
     \end{abstract}
 
     \section{TinyCSP has lost its search}
 
     In this exercise, we will study a simple CSP solver in Java called TinyCSP.
     Let us first see how to model the NQueens problem using TinyCSP.
-    The NQueens problem is to place N queens on an N x N chessboard such that no two queens threaten each other.
-    The model is given in the code Listing~\ref{nqueen} below.
+    The NQueens problem is to place N queens on an $N \times N$ chessboard such that no two queens threaten each other.
+    The model is given in the code Listing~\ref{nqueen}.
 
     \begin{minipage}{\linewidth}
         \lstinputlisting[language=Java, label=nqueen, caption={NQueens Model using TinyCSP}, escapeinside={(*@}{@*)}]{figures/NQueens.java}
     \end{minipage}
 
-    The domain to represent the values of the variables is implemented in the class \texttt{Domain} and the variables are instances of the class \texttt{Domain}.
-    It is a simple implementation of a domain using a \texttt{BitSet} to represent the set of values in the domain.
+    The domain to represent the values of the variables is implemented in the class \texttt{Domain}
+    in Listing~\ref{domain}.
+    It is a simple implementation of a domain using a \texttt{BitSet} to represent the set of values.
 
 
     \begin{minipage}{\linewidth}
-        \lstinputlisting[language=Java,caption={Domain Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Domain.java}
+        \lstinputlisting[language=Java,label=domain, caption={Domain Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Domain.java}
     \end{minipage}
 
 
 
-    The Variable implementatino is very simple, it just contains a domain.
+    The variable implementatino is very simple in Listing~\ref{variable}, it just contains a domain.
 
     \begin{minipage}{\linewidth}
-        \lstinputlisting[language=Java,caption={Variable Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Variable.java}
+        \lstinputlisting[language=Java,label=variable,caption={Variable Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Variable.java}
     \end{minipage}
 
 
-    Constraint is an abstract class with an absract method \texttt{propagate()}
+    The constraint implementation is given in Listing~\ref{constraint}.
+    A \texttt{Constraint} is an abstract class with an absract method \texttt{propagate()}
     that is called by the solver to remove inconsistent values from the domains of the variables involved in the constraint.
     It also returns true if any value could be removed from the domains of the variables involved in the constraint.
     The constraint can also throw an \texttt{Inconsistency} exception if the constraint is not satisfiable.
 
-    In TinyCSP, we have only one constraint implemented, the \texttt{NotEqual} constraint.
+    In \texttt{TinyCSP}, we have only one constraint implemented, the \texttt{NotEqual} constraint.
     Of course feel free to implement more constraints during your free times.
 
     \begin{minipage}{\linewidth}
-        \lstinputlisting[language=Java,caption={Constraints Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Constraint.java}
+        \lstinputlisting[language=Java,label=constraint,caption={Constraints Implementation in TinyCSP}, escapeinside={(*@}{@*)}]{figures/Constraint.java}
     \end{minipage}
 
 
-    The TinyCSP solver class is the main class that implements the solver.
+    The \texttt{TinyCSP} solver class is given in Listing~\ref{tinycsp}.
     It contains a list of constraints and a list of variables.
     The solver provides factory methods to create variables, add constraints, and trigger fix point propagation.
     Unfortunately, the search is not implemented yet.
 
     \begin{exercise}
-        Your task is to implement the depth search algorithm.
+        Implement the depth search method Listing~\ref{tinycsp}.
+        It should be a labeling strategy, trying to assign an unfixed variable in each node of the search tree.
+        One branch is created for each value in the domain of the variable.
         If you need some hint, you can look at the Listing~\ref{shuffled_dfs} below
         that contains the shuffled lines of code to complete the \texttt{dfsNary} method.
     \end{exercise}
@@ -123,24 +141,24 @@
         \lstinputlisting[language=Java, label=shuffled_dfs, caption={Shuffled lines for completing the dfsNary of Listing~\ref{tinycsp}},escapeinside={(*@}{@*)}]{figures/DFSShuffle.java}
     \end{minipage}
 
-    As you might have noticed the variable selection is very simple,
+    As you might have noticed the variable selection is somewhat simple,
     it just selects the first variable that is not fixed.
-    Now that you are convinced about the importance of the first fail heuristic,
+    Now that you are convinced about the importance of the \emph{first-fail heuristic},
     let us implement it in the next exercise.
 
     \begin{exercise}
-        Your task is to implement the first fail heuristic in Listing~\ref{ff}.
+        Your task is to implement the \emph{first-fail} heuristic in Listing~\ref{ff}.
         To help you, we have provided the shuffled lines of code in Listing~\ref{shuffled_ff} below.
         Of course, don't forget to adapt your code for the search algorithm
-        in Listing~\ref{tinycsp} to call your new first fail heuristic.
+        in Listing~\ref{tinycsp} to call your new first)fail heuristic.
     \end{exercise}
 
     \begin{minipage}{\linewidth}
-        \lstinputlisting[language=Java, label=ff, caption={First fail},escapeinside={(*@}{@*)}]{figures/FirstFail.java}
+        \lstinputlisting[language=Java, label=ff, caption={First-fail},escapeinside={(*@}{@*)}]{figures/FirstFail.java}
     \end{minipage}
 
     \begin{minipage}{\linewidth}
-        \lstinputlisting[language=Java, label=shuffled_ff, caption={Suffled lines for completing the first fail of Listing~\ref{ff}},escapeinside={(*@}{@*)}]{figures/FirstFailShuffle.java}
+        \lstinputlisting[language=Java, label=shuffled_ff, caption={Suffled lines for completing the first-fail of Listing~\ref{ff}},escapeinside={(*@}{@*)}]{figures/FirstFailShuffle.java}
     \end{minipage}
 
 
@@ -179,7 +197,22 @@
 
         There are no solutions to this problem.
         Draw the search tree.
-        How many nodes will be visited by the solver?
+        How many nodes are visited during the search?
+    \end{exercise}
+
+    \begin{exercise}
+        A model $M$ is used for a CSP on a set of variables $X_1, X_2, \ldots, X_n$.
+        A min-domain variable heuristic is used and a a min-value binary heuristic is used for the value selection.
+        In this model, there is a constraint $C$ that acts on some variables.
+        Two propagators are available for this constraint $C$.
+        The first propagator ensures bound consistency and the second domain consistency.
+        The number of backtracks to find the solution is recorded using both propagators separately.
+        Strangely, fewer backtracks are observed with the weaker propagator than with the stronger propagator.
+        Assuming there are no bugs, how can this be explained?
+        Can you design a search strategy that ensures that the number of backtracks
+        is always less or equal to the stronger propagator?
+        \begin{answerbox}[title=Answer]{4cm}
+        \end{answerbox}
     \end{exercise}
 
     \section{Value Heuristics}
@@ -232,9 +265,9 @@
     \section{Discrepancy Search}
 
     \begin{exercise}
-        A complete binary tree of depth 4 was pruned by a limited discrepancy search.
+        A complete binary tree of depth 4 was pruned using Limited Discrepancy Search.
         The resulting tree is shown in Figure~\ref{fig:discrepancy1}.
-        What do you tink was the dicrepancy limit used to prune the tree?
+        What do you think was the discrepancy limit used to prune the tree?
         \label{ex:discrepancy1}
     \end{exercise}
 
@@ -245,9 +278,17 @@
         \label{fig:discrepancy1}
     \end{figure}
 
+    \begin{figure}[htbp]
+        \centering
+        \input{figures/discrepancy2.tikz}
+        \caption{Exercise~\ref{ex:discrepancy2} and~\ref{ex:discrepancy3}.}
+        \label{fig:discrepancy2}
+    \end{figure}
+
     \begin{exercise}
-        Consider binary tree shown in Figure~\ref{fig:discrepancy2}.
-        What is the lowest discrepancy limit that could be used to that no nodes are pruned?
+        Consider the binary tree shown in Figure~\ref{fig:discrepancy2},
+        which has not been pruned by Limited Discrepancy Search.
+        What is the lowest discrepancy limit that can be used so that no further nodes are pruned?
         \label{ex:discrepancy2}
     \end{exercise}
 
@@ -257,21 +298,17 @@
         \label{ex:discrepancy3}
     \end{exercise}
 
-    \begin{figure}[htbp]
-        \centering
-        \input{figures/discrepancy2.tikz}
-        \caption{Exercise~\ref{ex:discrepancy2} and~\ref{ex:discrepancy3}.}
-        \label{fig:discrepancy2}
-    \end{figure}
+
 
     \section{Breaking Symmetries}
 
     \subsection{With constraints ...}
 
     Consider a graph with 6 vertices arranged in a hexagon (each vertex connected to its two immediate neighbors).
-    The goal is to color each vertex with one of 3 colors (e.g., Red, Green, Blue) such that no two adjacent vertices share the same color.
+    The goal is to color each vertex with one of three colors (e.g., Red, Green, Blue)
+    such that no two adjacent vertices share the same color.
 
-    \begin{figure}[htbp]
+    \begin{figure}[h!tbp]
         \centering
         \input{figures/symmetry1.tikz}
         \caption{Exercise~\ref{ex:symmetry1}.}
@@ -280,29 +317,32 @@
 
     \begin{exercise}
         Propose a CSP model for the hexagon problem (variables, domains, constraints).
-        \begin{verbatim}
-            ....
-            ....
-            ...
-        \end{verbatim}
+        \begin{answerbox}[title=Answer]{4cm}
+        \end{answerbox}
         \label{ex:symmetry1}
     \end{exercise}
 
 
     \begin{exercise}
         List 3 type of symmetries in the hexagon problem.
+        \begin{answerbox}[title=Answer]{4cm}
+        \end{answerbox}
         \label{ex:symmetry2}
     \end{exercise}
 
     \begin{exercise}
         Given a solution to the hexagon problem, how many symmetric solutions can you generate
         using each type of symmetry ?
+        \begin{answerbox}[title=Answer]{3cm}
+        \end{answerbox}
         \label{ex:symmetry3}
     \end{exercise}
 
     \begin{exercise}
         Given a solution to the hexagon problem,
         propose a symmetry breaking constraint that can be used to eliminate symmetric solutions.
+        \begin{answerbox}[title=Answer]{3cm}
+        \end{answerbox}
         \label{ex:symmetry4}
     \end{exercise}
 
@@ -327,8 +367,8 @@
         $q_1<q_2< \ldots <q_n$ to our model.
         Which statements are valid?
         \begin{enumerate}
-            \item The number of backtracks required using heuristic $H$ to find the first solution might be larger or smaller, but hopefully smaller
-            \item The number of solutions output by my model when enumerating them all is reduced by a factor $n!$ (factorial)
+            \item The number of backtracks required using heuristic $H$ to find the first solution might be larger or smaller, but hopefully smaller.
+            \item The number of solutions output by my model when enumerating them all is reduced by a factor $n!$ (factorial).
             \item The number of backtracks required using heuristic $H$ to find the first solution is always reduced since the search tree to explore is smaller.
         \end{enumerate}
         \label{ex:queens_symmetry2}
@@ -346,8 +386,11 @@
         $X_0=0,X_4=0,X_1=1,X_2=1$.
         \begin{itemize}
             \item  Represent the item placed in each bin corresponding to the assignment in Figure~\ref{fig:symmetry2}.
-            \item  The variable $X_5$ is the next unassigned variable selected by the search heuristic. What are the possible values for $X_5$? What branches must then be considered for avoiding the exploration of symmetric solutions?
+            \item  The variable $X_5$ is the next unassigned variable selected by the search heuristic.
+                   What are the possible values for $X_5$? What branches must then be considered for avoiding the exploration of symmetric solutions?
         \end{itemize}
+        \begin{answerbox}[title=Answer]{4cm}
+        \end{answerbox}
         \label{symmetry2}
     \end{exercise}
 
@@ -363,7 +406,7 @@
     \section{Large Neighborhood Search}
     
     \begin{exercise}
-        For modeling the traveling salesman problem (TSP) using CP, one can use a successor array representation.
+        For modeling the Traveling Salesman Problem (TSP) using CP, one can use a successor array representation.
         The variable $X_i$ represents the city visited after city $i$.
         Then one need one $\texttt{circuit}X_1 \ldots X_n)$ global constraint to ensure that the tour is a single cycle.
         For the circuit on the left of Figure~\ref{fig:lns1} and the successor array representation,
@@ -371,6 +414,8 @@
         \begin{equation*}
             X_0 = \ldots, X_1 = \ldots, X_2 = \ldots, X_3 = \ldots,X_4 = \ldots, X_5 = \ldots, X_6 = \ldots.
         \end{equation*}
+        \begin{answerbox}[title=Answer]{3cm}
+        \end{answerbox}
         \label{ex:lns1}
     \end{exercise}
 
@@ -387,8 +432,99 @@
     \caption[]{Exercise~\ref{ex:lns1}. The three iterations of the LNS algorithm on a TSP instance.}
     \end{figure}
 
+    \begin{exercise}
+        Figure~\ref{fig:lns1} shows the three iterations of a large neighborhood search (LNS) algorithm on a TSP instance.
+        For the two first iterations, what variables are fixed, what variables are unfixed and what
+        are the domains of the unfixed variables before the re-optimizaztion ?
+        \begin{answerbox}[title=Answer]{3cm}
+        \end{answerbox}
+        \label{ex:lns2}
+    \end{exercise}
 
     \section{Restarts}
+
+    \section{Comparing Search Algorithms}
+
+    The next table gives the run time in seconds to solve a constrained optimization using
+    two different algorithms (for instance with different heuristics) $A$ and $B$.
+    A timeout was used to limit the time to 10 seconds to find and prove optimality.
+    $TO$ means the algorithm did not prove optimality within the time limit, but it did find a solution.
+    The gap in percentage is given in the table.
+
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{|l|c|c||c|c|}
+            \hline
+            instance & $time(A)$ & $gap(A)\%$ & $time(B)$ & $gap(B)\%$  \\
+            \hline
+            1 & 1 & 0 & 4 & 0\\
+            2 & 2 & 0 & 8 & 0 \\
+            3 & TO & 20 & 3 & 0\\
+            4 & 8 & 0 & 4 & 0 \\
+            5 & 4 & 0 & 1 & 0 \\
+            6 & 1 & 0 & 5 & 0 \\
+            7 & 1 & 0 & 4 & 0 \\
+            8 & 4 & 0 & 2 & 0 \\
+            9 & 4 & 0 & TO & 15 \\
+            10 & TO & 5 & TO & 40 \\
+            \hline
+        \end{tabular}
+        \caption{Run time in seconds for solving a CSP with two algorithms A and B on 10 instances.}
+        \label{tab:algorithms}
+    \end{table}
+
+    \begin{exercise}
+        Depict the cactus plot and the gap profile comparing the two algorithms A and B.
+        \begin{center}
+        \begin{tikzpicture}[scale=0.7]
+            \draw (0,0) grid (20,11);
+        \end{tikzpicture}
+        \end{center}
+    \end{exercise}
+
+    \begin{exercise}
+        Depict the performance profile plot for the run-time comparing the two algorithms A and B
+        \begin{center}
+        \begin{tikzpicture}[scale=0.7]
+            \draw (0,0) grid (20,11);
+        \end{tikzpicture}
+        \end{center}
+    \end{exercise}
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|c|c|c|c|}
+    \hline
+    \( i \) & \( t_i \) & \( \bar{z}_A(t_i) \) & \( \bar{z}_B(t_i) \) & \( \gamma(\bar{z}_A(t_i)) \) & \( \gamma(\bar{z}_B(t_i)) \) \\
+    \hline
+    0 & 0 & - & - & 1 & 1 \\
+    1 & 2 & 450 &  - & & \\
+    2 & 4 &   & 480 & & \\
+    3 & 6 & 490 &    & & \\
+    4 & 8 & 495 &   & & \\
+    5 & 10 &  & 498 & & \\
+    5 & 12$=t_{\max}$ & TO & TO & & \\
+    \hline
+    \end{tabular}
+    \caption{Input data for Exercise \ref{ex:anytime}.}
+    \label{tab:anytime}
+    \end{table}
+
+    \begin{exercise}
+        An instance of a maximization problem is solved by two heuristics $A$ and $B$.
+        The Table~\ref{tab:anytime} gives the incumbent solutions \(\bar{z}\) found at the different points
+        in time for both heuristics.
+        The known optimal solution of the solved instance is \(z^* = 500\).
+        We are interested in the anytime performance of the two heuristics.
+        \begin{enumerate}
+        \item Compute in the Table~\ref{tab:anytime} the primal gap \(\gamma(\bar{z})\)
+              for each incumbent solution at each times for both heuristics $A$ and $B$.
+        \item Compute and compare the primal integral \(P_A(12)\) and \(P_B(12)\)
+              to determine which has the best anytime performance.
+        \end{enumerate}
+        \label{ex:anytime}
+    \end{exercise}
+
 
     \bibliographystyle{alpha}
     \bibliography{biblio}
